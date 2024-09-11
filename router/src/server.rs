@@ -1191,10 +1191,10 @@ async fn chat_completions(
         .filter(|s| !s.is_empty())
         .unwrap_or_else(default_tool_prompt);
     let stop = stop.unwrap_or_default();
-    // assume temperature is 0 if not set, enable greedy when temperature is 0
+    // enable greedy only when temperature is 0
     let (do_sample, temperature) = match temperature {
-        None | Some(0.0) => (false, None),
-        Some(t) => (true, Some(t)),
+        Some(temperature) if temperature == 0.0 => (false, None),
+        other => (true, other),
     };
     let (inputs, grammar, using_tools) = prepare_chat_input(
         &infer,
