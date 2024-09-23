@@ -214,6 +214,11 @@ class SparseMoELayer(nn.Module):
                 f"Unsupported weights loader: {weights.loader}, sparse MoE is only supported for unquantized and GPTQ weights"
             )
 
+        log_once(
+            logger.info,
+            "Using MoE layer wih fused gemm",
+        )
+
         self.moe = cls(
             n_expert_group=n_expert_group,
             n_experts=n_experts,
